@@ -1,0 +1,10 @@
+AI Song database info:
+
+Song name- Artist.txt
+
+4 Genres 
+18 Students 
+
+54 of each genre 
+216 songs total 
+
