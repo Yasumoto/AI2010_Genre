@@ -1,11 +1,11 @@
 import java.util.HashMap;
 
 
-public class matrix {
+public class Matrix {
 	
 	HashMap<Integer, HashMap<Integer, Float>> matrix;
 	
-	public matrix() {
+	public Matrix() {
 		
 		matrix = new HashMap<Integer, HashMap<Integer, Float>>();
 	}
