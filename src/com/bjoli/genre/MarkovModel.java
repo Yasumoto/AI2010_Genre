@@ -11,14 +11,15 @@ public class MarkovModel
 {
 	private Matrix mat;
 	private HashMap<String, Integer> words;
-	private HashMap<String, Integer> firstCounts;
+	private HashMap<String, Float> firstCounts;
 	private int numWords;
+	private float smallest;
 
 	public MarkovModel()
 	{
 		mat = new Matrix();
 		words = new HashMap<String, Integer>();
-		firstCounts = new HashMap<String, Integer>();
+		firstCounts = new HashMap<String, Float>();
 	}
 
 	public void update(File file)
@@ -32,7 +33,7 @@ public class MarkovModel
 			
 			if (!firstCounts.containsKey(line[0]))
 			{
-				firstCounts.put(line[0], 1); //Set the number of occurrences to 1.
+				firstCounts.put(line[0], new Float(1)); //Set the number of occurrences to 1.
 			}
 			else
 			{
@@ -59,43 +60,91 @@ public class MarkovModel
 		{
 			line = s.nextLine().split("[//s]+"); //Split into words.
 
-			for (int i = 1; i < line.length; ++i) //For each word in the line, except the first word...
+			for (int i = 0; i < line.length - 1; ++i) //For each word in the line, except the first word...
 			{
-				current = mat.get(words.get(line[i]), words.get(line[i - 1])); //Get the current count.
-				mat.set(words.get(line[i]), words.get(line[i - 1]), current + 1); //Increment the current count.
+				current = mat.get(words.get(line[i]), words.get(line[i + 1])); //Get the current count.
+				mat.set(words.get(line[i]), words.get(line[i + 1]), current + 1); //Increment the current count.
 			}
 		}
 	}
 
-	public float probability(File file)
+//	public float probability(File file)
+//	{
+//		Scanner s = createScanner(file);
+//		String line;
+//		double firstProb;
+//		double sum;
+//
+//		while (s.hasNextLine()) //For each line in the file...
+//		{
+//			line = s.nextLine();
+//			for (String i: line.split("[//s]+")) //For each word in the line, except the last word...
+//			{
+//				firstProb = firstCounts.get(words.get(i));
+//
+//
+//			}
+//		}
+//
+//		return 0;
+//	}
+	
+	public double probability(String line)
 	{
-		Scanner s = createScanner(file);
-		String line;
+		String[] splitLine = line.split("[//s]+"); //Array of words in the line.
 		double firstProb;
-		double sum;
+		double sum = 0;
 
-		while (s.hasNextLine()) //For each line in the file...
+		Float val;
+		if ((val = firstCounts.get(splitLine[0])) != null)
+			firstProb = Math.log(val); //Log of the first word probability.
+		else
+			firstProb = Math.log(smallest / 2);
+		
+		for (int i = 1; i < splitLine.length; ++i) //going through the array
 		{
-			line = s.nextLine();
-			for (String i: line.split("[//s]+")) //For each word in the line, except the last word...
-			{
-				firstProb = firstCounts.get(words.get(i));
-
-
-			}
+			if (words.get(splitLine[i]) != null && words.get(splitLine[i - 1]) != null 
+					&& mat.get(words.get(splitLine[i]), words.get(splitLine[i - 1])) != 0)
+				sum += Math.log(mat.get(words.get(splitLine[i]), words.get(splitLine[i - 1]))); //taking the log of the bigram probability
+			else
+				sum += Math.log(smallest / 2);
 		}
-
-		return 0;
+		
+		return firstProb + sum; //returning the first word probability plus the sum of the bigram probability.
 	}
 
 	public void normalize()
 	{
-
-	}
-
-	public void smooth()
-	{
-
+		//Normalize first words hash map
+		for (String i: firstCounts.keySet()) //For each first word.
+		{
+			firstCounts.put(i, firstCounts.get(i) / firstCounts.keySet().size()); //replaces count by count divided by size
+		}
+		
+		//Normalize bigram matrix
+		smallest = Integer.MAX_VALUE;
+		
+		for (int i = 0; i < mat.getSize(); ++i) //Iterating through matrix rows...
+		{
+			float count = 0;
+			for (int j = 0; j < mat.getSize(); ++j) //Iterating through matrix cols...
+			{
+				if (mat.get(i, j) > 0) //if it exists.
+					count = count + mat.get(i, j); //Adding all non zero values in the row
+			}
+			for (int j = 0; j < mat.getSize(); ++j) //iterating through matrix cols again...
+			{
+				if (mat.get(i, j) > 0) //if it is a non zero value.
+				{
+					float value = mat.get(i, j) / count; //dividing non zero values by the total count.
+					mat.set(i, j, value);
+					if (value < smallest)
+					{
+						smallest = value;
+					}
+				}
+			}
+		}
 	}
 
 	private Scanner createScanner(File file)
