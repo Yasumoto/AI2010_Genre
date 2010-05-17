@@ -1,3 +1,4 @@
+package com.bjoli.genre;
 import java.util.HashMap;
 
 
@@ -22,7 +23,11 @@ public class Matrix {
 	
 	public float get(int one, int two) { //returns float key 
 		
-		return matrix.get(new Integer(one)).get(new Integer(two)).floatValue();
+		if (matrix.get(new Integer(one)).get(new Integer(two)) != null)
+		{
+			return matrix.get(new Integer(one)).get(new Integer(two)).floatValue();
+		}
+		return 0;
 	}
 	
 	public int getSize() {

@@ -56,15 +56,7 @@ public class MarkovModel
 			
 			for (int i = 0; i < line.length - 1; ++i) //For each word in the line, except the last word...
 			{
-				if (mat.get(words.get(line[i]), words.get(line[i + 1])) == null) //If we get a null value, then the current count is 0...
-				{
-					current = 0;
-				}
-				else
-				{
-					current = mat.get(words.get(line[i]), words.get(line[i + 1])); //Otherwise, we get the current value.
-				}
-
+				current = mat.get(words.get(line[i]), words.get(line[i + 1])); //Otherwise, we get the current value.
 				mat.set(words.get(line[i]), words.get(line[i + 1]), current + 1); //We increment the current value.
 			}
 		}
@@ -82,7 +74,7 @@ public class MarkovModel
 	
 	private Scanner createScanner(File file)
 	{
-		Scanner s;
+		Scanner s = null;
 		try
 		{
 			s = new Scanner(new FileReader(file));
