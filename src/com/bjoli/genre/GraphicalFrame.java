@@ -71,13 +71,13 @@ public class GraphicalFrame extends JPanel
 	//fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         //fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-        //Create the open button.  We use the image from the JLF
+        //Create the train button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
         trainButton = new JButton("Train on a Directory",
                                  createImageIcon("img/folder.png"));
         trainButton.addActionListener(this);
 
-        //Create the save button.  We use the image from the JLF
+        //Create the classify button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
         classifyButton = new JButton("Classify a Song",
                                  createImageIcon("img/classify.png"));
@@ -95,30 +95,30 @@ public class GraphicalFrame extends JPanel
 
     public void actionPerformed(ActionEvent e) {
 
-        //Handle open button action.
+        //Handle train button action.
         if (e.getSource() == trainButton) {
 	        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int returnVal = fc.showOpenDialog(GraphicalFrame.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                //This is where a real application would open the file.
+                //This is where a real application would train the file.
                 log.append("Training: " + file.getName() + "." + newline);
             } else {
-                log.append("Open command cancelled by user." + newline);
+                log.append("Train command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-        //Handle save button action.
+        //Handle classify button action.
         } else if (e.getSource() == classifyButton) {
 	        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            int returnVal = fc.showSaveDialog(GraphicalFrame.this);
+            int returnVal = fc.showOpenDialog(GraphicalFrame.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                //This is where a real application would save the file.
+                //This is where a real application would classify the file.
                 log.append("Classifying: " + file.getName() + "." + newline);
             } else {
-                log.append("Save command cancelled by user." + newline);
+                log.append("Classify command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
         }
@@ -142,7 +142,7 @@ public class GraphicalFrame extends JPanel
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("GraphicalFrame");
+        JFrame frame = new JFrame("Genre - Awesome");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.
