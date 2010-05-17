@@ -41,7 +41,8 @@ public class Matrix {
 		{
 			for (int j = 0; j < matrix.keySet().size(); ++j)
 			{
-				System.out.print(get(i, j));
+				if (get(i, j) != 0)
+					System.out.print(get(i, j));
 			}
 			System.out.println();
 		}

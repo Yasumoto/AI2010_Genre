@@ -32,10 +32,10 @@ public class Classifier
 		}
 		
 		//TEST STUFF
-//		for (MarkovModel mm: mms)
-//		{
-//			mm.print();
-//		}
+		for (MarkovModel mm: mms)
+		{
+			mm.print();
+		}
 		
 		
 	}
@@ -72,6 +72,6 @@ public class Classifier
 	public static void main(String[] args)
 	{
 		Classifier cf = new Classifier();
-		cf.train(new File("/Users/linzy/Documents/workspace/AI Project/AISongLyrics"));
+		cf.train(new File("AISongLyrics"));
 	}
 }
