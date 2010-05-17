@@ -38,11 +38,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.*;
 
 public class GraphicalFrame extends JPanel
                              implements ActionListener {
-    static private final String newline = "\n";
+
+	private static final long serialVersionUID = 8378710513427390896L;
+	static private final String newline = "\n";
     JButton trainButton, classifyButton;
     JTextArea log;
     JFileChooser fc;
