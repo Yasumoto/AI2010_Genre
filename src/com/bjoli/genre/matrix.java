@@ -23,7 +23,7 @@ public class Matrix {
 	
 	public float get(int one, int two) { //returns float key 
 		
-		if (matrix.get(new Integer(one)).get(new Integer(two)) != null)
+		if (matrix.get(new Integer(one)) != null && matrix.get(new Integer(one)).get(new Integer(two)) != null)
 		{
 			return matrix.get(new Integer(one)).get(new Integer(two)).floatValue();
 		}
@@ -35,44 +35,15 @@ public class Matrix {
 		return matrix.size();
 	}
 
+	public void print()
+	{
+		for (int i = 0; i < matrix.keySet().size(); ++i)
+		{
+			for (int j = 0; j < matrix.keySet().size(); ++j)
+			{
+				System.out.print(get(i, j));
+			}
+			System.out.println();
+		}
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
