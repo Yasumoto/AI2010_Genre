@@ -36,10 +36,10 @@ public class Classifier
 		}
 		
 		//TEST STUFF
-		for (MarkovModel mm: mms)
-		{
-			mm.print();
-		}
+//		for (MarkovModel mm: mms)
+//		{
+//			mm.print();
+//		}
 		
 		
 	}
@@ -75,6 +75,7 @@ public class Classifier
 	
 	public String classifyLine(String line)
 	{
+		System.out.println("The line: " + line);
 		double[] probabilities = new double[genres.length]; //array of initial probabilities.
 		int current = 0; //array counter.
 		for (MarkovModel mm: mms) //for every MarkovModel in the array.
@@ -82,6 +83,13 @@ public class Classifier
 			probabilities[current] = mm.probability(line); //get initial probability from the Markov Model.
 			++current;
 		}
+		
+		//TEST
+		for (int i = 0; i < genres.length; ++i)
+		{
+			System.out.println("\t" + genres[i] + " prob of " + probabilities[i]);
+		}
+		//END
 		
 		double[] realProbabilities = new double[genres.length];//Array of calculated probabilities.
 		int max = 0; //Pointer to maximum probability.
@@ -98,7 +106,7 @@ public class Classifier
 				max = i;
 			}
 		}
-		
+		System.out.println("Classified as: " + genres[max]);
 		return genres[max]; //returning corresponding genre.
 	}
 	
@@ -128,11 +136,15 @@ public class Classifier
 		
 		for (String i: votes.keySet()) //Iterating through all the strings in HashMap. 
 		{
-			if (votes.get(i).intValue() > highCount) //If vote count is higher then high count. 
+			System.out.println(i + ": " + votes.get(i) + " votes");
+			if (votes.get(i) > highCount) //If vote count is higher then high count. 
 			{
-				finalVote = i; //sets final vote to the newest high vote. 
+				finalVote = i; //sets final vote to the newest high vote.
+				highCount = votes.get(i);
 			}
 		}
+		
+		System.out.println(finalVote);
 		
 		return finalVote;
 	}
@@ -155,6 +167,9 @@ public class Classifier
 	public static void main(String[] args)
 	{
 		Classifier cf = new Classifier();
-		cf.train(new File("AISongLyrics"));
+		cf.train(new File("/Users/linzy/Documents/workspace/AI Project/AISongLyrics"));
+		String x = cf.classify(new File("/Users/linzy/Documents/workspace/AI Project/TestSongs/s4.txt"));
+		//String x = cf.classify(new File("/Users/linzy/Documents/workspace/AI Project/AISongLyrics/Spiritual/Agnus Dei- Richard Marlow & The Choir of Trinity College.txt"));
+		System.out.println(x);
 	}
 }

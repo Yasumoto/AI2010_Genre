@@ -29,7 +29,7 @@ public class MarkovModel
 
 		while (s.hasNextLine()) //For each line in the file...
 		{
-			line = s.nextLine().split("[//s]+"); //Split into words.
+			line = s.nextLine().toLowerCase().split("[//s]+"); //Split into words.
 			
 			if (!firstCounts.containsKey(line[0]))
 			{
@@ -58,7 +58,7 @@ public class MarkovModel
 
 		while (s.hasNextLine()) //For each line in the file...
 		{
-			line = s.nextLine().split("[//s]+"); //Split into words.
+			line = s.nextLine().toLowerCase().split("[//s]+"); //Split into words.
 
 			for (int i = 0; i < line.length - 1; ++i) //For each word in the line, except the first word...
 			{
@@ -91,23 +91,23 @@ public class MarkovModel
 	
 	public double probability(String line)
 	{
-		String[] splitLine = line.split("[//s]+"); //Array of words in the line.
-		double firstProb;
+		String[] splitLine = line.toLowerCase().split("[//s]+"); //Array of words in the line.
+		double firstProb = 0;
 		double sum = 0;
 
 		Float val;
 		if ((val = firstCounts.get(splitLine[0])) != null)
 			firstProb = Math.log(val); //Log of the first word probability.
-		else
-			firstProb = Math.log(smallest / 2);
+//		else
+//			firstProb = Math.log(smallest / 2);
 		
 		for (int i = 1; i < splitLine.length; ++i) //going through the array
 		{
 			if (words.get(splitLine[i]) != null && words.get(splitLine[i - 1]) != null 
 					&& mat.get(words.get(splitLine[i]), words.get(splitLine[i - 1])) != 0)
 				sum += Math.log(mat.get(words.get(splitLine[i]), words.get(splitLine[i - 1]))); //taking the log of the bigram probability
-			else
-				sum += Math.log(smallest / 2);
+//			else
+//				sum += Math.log(smallest / 2);
 		}
 		
 		return firstProb + sum; //returning the first word probability plus the sum of the bigram probability.
