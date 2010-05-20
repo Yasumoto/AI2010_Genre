@@ -46,7 +46,7 @@ public class MarkovModel
 				{
 					words.put(line[i], numWords++); //Add the word.
 				}
-			}
+			} 
 		}
 	}
 
